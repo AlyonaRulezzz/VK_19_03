@@ -62,12 +62,13 @@ class ClockView : View {
             initClock()
         }
         canvas.drawColor(Color.BLACK)
+        drawInsideCircle(canvas)
         drawCircle(canvas)
+
+
+
         drawCenter(canvas)
         drawNumeral(canvas)
-
-
-
         drawHands(canvas)
         postInvalidateDelayed(500)
         invalidate()
@@ -122,11 +123,23 @@ class ClockView : View {
     }
 
     private fun drawCircle(canvas: Canvas) {
-        paint!!.reset()
+//        paint!!.reset()
         paint!!.color = resources.getColor(R.color.holo_orange_dark)
 //        paint!!.strokeWidth = 5f
         paint!!.strokeWidth = fontSize / 2f  //
         paint!!.style = Paint.Style.STROKE
+//        paint!!.isAntiAlias = true
+        canvas.drawCircle(
+            (width / 2).toFloat(), (height / 2).toFloat(), (radius + padding - 10).toFloat(),
+            paint!!
+        )
+    }
+
+    private fun drawInsideCircle(canvas: Canvas) {
+        paint!!.reset()
+        paint!!.color = resources.getColor(R.color.white)
+//        paint!!.strokeWidth = fontSize / 2f  //
+        paint!!.style = Paint.Style.FILL
         paint!!.isAntiAlias = true
         canvas.drawCircle(
             (width / 2).toFloat(), (height / 2).toFloat(), (radius + padding - 10).toFloat(),
