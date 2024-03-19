@@ -9,7 +9,6 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import java.lang.Math.min
 import java.util.Calendar
 import kotlin.math.cos
 import kotlin.math.sin
@@ -21,7 +20,7 @@ class ClockView : View {
     private var padding = 0
     private var fontSize = 0
     private val numeralSpacing = 0
-    private var handTruncation = 0
+//    private var handTruncation = 0
     private var hourHandTruncation = 0
     private var minuteHandTruncation = 0
     private var radius = 0
@@ -50,9 +49,9 @@ class ClockView : View {
             if (fontSize < 20) numeralSpacing + (fontSize * 1.5).toInt()
             else numeralSpacing + fontSize
         radius = min / 2 - padding
-        handTruncation = min / 25
-        hourHandTruncation = min / 7
-        minuteHandTruncation = min / 10
+//        handTruncation = min / 25
+        hourHandTruncation = min / 10
+        minuteHandTruncation = min / 15
         paint = Paint()
         isInit = true
     }
@@ -76,11 +75,11 @@ class ClockView : View {
 
     private fun drawHand(canvas: Canvas, loc: Double, isHour: Boolean, isMinute: Boolean) {
         val angle = Math.PI * loc / 30 - Math.PI / 2
-        paint!!.color = resources.getColor(R.color.holo_orange_light)
+//        paint!!.color = resources.getColor(R.color.holo_orange_light)
         var handRadius = radius
             if (isHour) {
                 paint!!.strokeWidth = fontSize / 5f
-                handRadius -= handTruncation + hourHandTruncation
+                handRadius -= hourHandTruncation
             } else if (isMinute) {
                 paint!!.strokeWidth = fontSize / 8f
                 handRadius -= minuteHandTruncation
@@ -100,9 +99,9 @@ class ClockView : View {
         val c = Calendar.getInstance()
         var hour = c[Calendar.HOUR_OF_DAY].toFloat()
         hour = if (hour > 12) hour - 12 else hour
-        drawHand(canvas, ((hour + c[Calendar.MINUTE] / 60) * 5f).toDouble(), true, false)
-        drawHand(canvas, c[Calendar.MINUTE].toDouble(), false, true)
-        drawHand(canvas, c[Calendar.SECOND].toDouble(), false, false)
+        drawHand(canvas, ((hour + c[Calendar.MINUTE] / 60) * 5f).toDouble(), isHour = true, isMinute = false)
+        drawHand(canvas, c[Calendar.MINUTE].toDouble(), isHour = false, isMinute = true)
+        drawHand(canvas, c[Calendar.SECOND].toDouble(), isHour = false, isMinute = false)
     }
 
     private fun drawNumeral(canvas: Canvas) {
