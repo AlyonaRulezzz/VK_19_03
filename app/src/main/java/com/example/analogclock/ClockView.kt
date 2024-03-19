@@ -45,7 +45,9 @@ class ClockView : View {
             TypedValue.COMPLEX_UNIT_SP, min / 20f,
             resources.displayMetrics
         ).toInt()
-        padding = numeralSpacing + fontSize
+        padding =
+            if (fontSize < 20) numeralSpacing + (fontSize * 1.5).toInt()
+            else numeralSpacing + fontSize
         radius = min / 2 - padding
         handTruncation = min / 20
         hourHandTruncation = min / 7
@@ -60,6 +62,9 @@ class ClockView : View {
         canvas.drawColor(Color.BLACK)
         drawCircle(canvas)
         drawCenter(canvas)
+
+
+
         drawNumeral(canvas)
         drawHands(canvas)
         postInvalidateDelayed(500)
@@ -107,8 +112,9 @@ class ClockView : View {
 
     private fun drawCircle(canvas: Canvas) {
         paint!!.reset()
-        paint!!.color = resources.getColor(R.color.white)
-        paint!!.strokeWidth = 5f
+        paint!!.color = resources.getColor(R.color.holo_orange_dark)
+//        paint!!.strokeWidth = 5f
+        paint!!.strokeWidth = fontSize / 2f  //
         paint!!.style = Paint.Style.STROKE
         paint!!.isAntiAlias = true
         canvas.drawCircle(
