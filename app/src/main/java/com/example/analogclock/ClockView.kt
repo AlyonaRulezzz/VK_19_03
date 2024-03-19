@@ -9,6 +9,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import java.lang.Math.min
 import java.util.Calendar
 import kotlin.math.cos
 import kotlin.math.sin
@@ -39,12 +40,12 @@ class ClockView : View {
     private fun initClock() {
         height = getHeight()
         width = getWidth()
-        padding = numeralSpacing + 50
+        val min = height.coerceAtMost(width)
         fontSize = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_SP, 13f,
+            TypedValue.COMPLEX_UNIT_SP, min / 20f,
             resources.displayMetrics
         ).toInt()
-        val min = Math.min(height, width)
+        padding = numeralSpacing + fontSize
         radius = min / 2 - padding
         handTruncation = min / 20
         hourHandTruncation = min / 7
@@ -72,8 +73,8 @@ class ClockView : View {
         canvas.drawLine(
             (width / 2).toFloat(),
             (height / 2).toFloat(),
-            (width / 2 + Math.cos(angle) * handRadius).toFloat(),
-            (height / 2 + Math.sin(angle) * handRadius).toFloat(),
+            (width / 2 + cos(angle) * handRadius).toFloat(),
+            (height / 2 + sin(angle) * handRadius).toFloat(),
             paint!!
         )
     }
