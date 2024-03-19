@@ -8,11 +8,43 @@
     android:background="#FFFFFF">
 
     <com.example.analogclock.ClockView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/clock1"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.analogclock.ClockView
+        android:id="@+id/clock2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clock1"/>
+
+    <com.example.analogclock.ClockView
+        android:id="@+id/clock3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clock2" />
+
+    <com.example.analogclock.ClockView
+        android:id="@+id/clock4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/clock2" />
+
+    <com.example.analogclock.ClockView
+        android:id="@+id/clock5"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clock2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
