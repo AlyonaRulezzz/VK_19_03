@@ -48,7 +48,7 @@ class ClockView : View {
         padding =
             if (fontSize < 20) numeralSpacing + (fontSize * 1.5).toInt()
             else numeralSpacing + fontSize
-        radius = min / 2 - padding
+        radius = min / 2 - padding - fontSize / 4
 //        handTruncation = min / 25
         hourHandTruncation = min / 10
         minuteHandTruncation = min / 15
@@ -125,7 +125,7 @@ class ClockView : View {
 //        paint!!.reset()
         paint!!.color = resources.getColor(R.color.holo_orange_dark)
 //        paint!!.strokeWidth = 5f
-        paint!!.strokeWidth = fontSize / 2f  //
+        paint!!.strokeWidth = fontSize / 2.5f  //
         paint!!.style = Paint.Style.STROKE
 //        paint!!.isAntiAlias = true
         canvas.drawCircle(
