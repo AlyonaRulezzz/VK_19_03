@@ -9,6 +9,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import java.lang.StrictMath.min
 import java.util.Calendar
 import kotlin.math.cos
 import kotlin.math.sin
@@ -28,6 +29,14 @@ class ClockView : View {
     private var isInit = false
     private val numbers = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
     private val rect = Rect()
+    private var radiusForDots = 0.0
+    private var radiusOfSmallDots = 0f
+    private var radiusOfBigDots = 0f
+
+    private var shadowRadius = 0f
+    private var shadowDx = 0f
+    private var shadowDy = 0f
+    private var shadowColor = Color.BLACK
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -54,6 +63,16 @@ class ClockView : View {
         minuteHandTruncation = min / 15
         paint = Paint()
         isInit = true
+        radiusForDots = min(height, width) / 2 - fontSize / 1.5
+        radiusOfSmallDots = fontSize / 20f
+        radiusOfBigDots = fontSize / 10f
+
+//        shadowRadius = 20f
+        shadowRadius = fontSize / 5f
+        shadowDx = 0f
+//        shadowDy = 100f
+        shadowDy = fontSize / 2f
+        shadowColor = Color.BLACK
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -63,19 +82,18 @@ class ClockView : View {
         canvas.drawColor(Color.BLACK)
         drawInsideCircle(canvas)
         drawCircle(canvas)
-
-
-
         drawCenter(canvas)
         drawNumeral(canvas)
+        drawDots(canvas)
         drawHands(canvas)
         postInvalidateDelayed(500)
         invalidate()
     }
 
     private fun drawHand(canvas: Canvas, loc: Double, isHour: Boolean, isMinute: Boolean) {
+        paint?.setShadowLayer(shadowRadius, shadowDx, shadowDy, shadowColor)
+
         val angle = Math.PI * loc / 30 - Math.PI / 2
-//        paint!!.color = resources.getColor(R.color.holo_orange_light)
         var handRadius = radius
             if (isHour) {
                 paint!!.strokeWidth = fontSize / 5f
@@ -93,6 +111,8 @@ class ClockView : View {
             (height / 2 + sin(angle) * handRadius).toFloat(),
             paint!!
         )
+
+        paint?.clearShadowLayer()
     }
 
     private fun drawHands(canvas: Canvas) {
@@ -116,20 +136,31 @@ class ClockView : View {
         }
     }
 
+    private fun drawDots(canvas: Canvas) {
+        paint!!.textSize = fontSize.toFloat()
+        for (number in 1..60) {
+            val angle = Math.PI / 30 * (number - 3)
+            val x = (width / 2 + cos(angle) * radiusForDots).toInt()
+            val y = (height / 2 + sin(angle) * radiusForDots).toInt()
+            if (number % 5 == 3) {
+                canvas.drawCircle(x.toFloat(), y.toFloat(), radiusOfBigDots, paint!!)
+            } else {
+                canvas.drawCircle(x.toFloat(), y.toFloat(), radiusOfSmallDots, paint!!)
+            }
+        }
+    }
+
     private fun drawCenter(canvas: Canvas) {
         paint!!.style = Paint.Style.FILL
-        canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), fontSize / 3f, paint!!)
+        canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), fontSize / 5f, paint!!)
     }
 
     private fun drawCircle(canvas: Canvas) {
-//        paint!!.reset()
         paint!!.color = resources.getColor(R.color.holo_orange_dark)
-//        paint!!.strokeWidth = 5f
-        paint!!.strokeWidth = fontSize / 2.5f  //
+        paint!!.strokeWidth = fontSize / 2.5f
         paint!!.style = Paint.Style.STROKE
-//        paint!!.isAntiAlias = true
         canvas.drawCircle(
-            (width / 2).toFloat(), (height / 2).toFloat(), (radius + padding - 10).toFloat(),
+            (width / 2).toFloat(), (height / 2).toFloat(), (radius + 0.9 * padding).toFloat(),
             paint!!
         )
     }
@@ -137,11 +168,10 @@ class ClockView : View {
     private fun drawInsideCircle(canvas: Canvas) {
         paint!!.reset()
         paint!!.color = resources.getColor(R.color.white)
-//        paint!!.strokeWidth = fontSize / 2f  //
         paint!!.style = Paint.Style.FILL
         paint!!.isAntiAlias = true
         canvas.drawCircle(
-            (width / 2).toFloat(), (height / 2).toFloat(), (radius + padding - 10).toFloat(),
+            (width / 2).toFloat(), (height / 2).toFloat(), (radius + 0.9 * padding).toFloat(),
             paint!!
         )
     }
