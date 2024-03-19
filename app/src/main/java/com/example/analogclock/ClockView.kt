@@ -92,15 +92,15 @@ class ClockView : View {
 
         val angle = Math.PI * loc / 30 - Math.PI / 2
         var handRadius = radius
-            if (isHour) {
-                paint!!.strokeWidth = coefficient / 5f
-                handRadius -= hourHandTruncation
-            } else if (isMinute) {
-                paint!!.strokeWidth = coefficient / 8f
-                handRadius -= minuteHandTruncation
-            } else {
-                paint!!.strokeWidth = coefficient / 15f
-            }
+        if (isHour) {
+            paint!!.strokeWidth = coefficient / 5f
+            handRadius -= hourHandTruncation
+        } else if (isMinute) {
+            paint!!.strokeWidth = coefficient / 8f
+            handRadius -= minuteHandTruncation
+        } else {
+            paint!!.strokeWidth = coefficient / 15f
+        }
         canvas.drawLine(
             (width / 2).toFloat(),
             (height / 2).toFloat(),
